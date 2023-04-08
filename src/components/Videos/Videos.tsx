@@ -58,7 +58,7 @@ function getVideos(offset: number = 0) {
   return new Promise<VideoData[]>((resolve) => {
     setTimeout(() => {
       resolve(data.map((item) => ({ ...item, id: `${offset}-${item.id}` })));
-    }, 5000);
+    }, 1000);
   });
 }
 
@@ -112,20 +112,28 @@ export default function Videos() {
   }, [activeVideoIndex, videos.length]);
 
   return (
-    <div
-      ref={containerRef}
-      className={styles.container}
-      onScroll={handleOnScroll}
-    >
-      {videos.map((item, i) => (
-        <Video
-          key={item.id}
-          id={item.id}
-          src={item.src}
-          active={item.id === activeVideoId}
-          live={isPlayerLive(activeVideoIndex, i)}
-        />
-      ))}
+    <div className={styles.container}>
+      <div
+        className={styles.videos}
+        ref={containerRef}
+        onScroll={handleOnScroll}
+      >
+        {videos.map((item, i) => (
+          <Video
+            key={item.id}
+            id={item.id}
+            src={item.src}
+            active={item.id === activeVideoId}
+            live={isPlayerLive(activeVideoIndex, i)}
+          />
+        ))}
+      </div>
+      <footer className={styles.footer}>
+        <button>Hello</button>
+        <button>Hello</button>
+        <button>Hello</button>
+        <button>Hello</button>
+      </footer>
     </div>
   );
 }
