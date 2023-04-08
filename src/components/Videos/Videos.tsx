@@ -10,7 +10,7 @@ type VideoData = {
 const data: VideoData[] = [
   {
     id: "zero",
-    src: "https://storage.xiaohai-huang.net/random/videos/edited.mp4",
+    src: "https://storage.xiaohai-huang.net/random/videos/Did%20you%20know%20you%20are%20using%20these%20right%20now_%20%23shorts.mp4",
   },
   {
     id: "one",
@@ -58,14 +58,14 @@ function getVideos(offset: number = 0) {
   return new Promise<VideoData[]>((resolve) => {
     setTimeout(() => {
       resolve(data.map((item) => ({ ...item, id: `${offset}-${item.id}` })));
-    }, 1000);
+    }, 0);
   });
 }
 
 function shouldLoadMore(activeVideoIndex: number, numVideos: number) {
   if (activeVideoIndex === -1) return false;
 
-  return activeVideoIndex === numVideos - 1;
+  return activeVideoIndex >= numVideos - 3;
 }
 
 export default function Videos() {
@@ -75,6 +75,8 @@ export default function Videos() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(-1);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [pendingVideos, setPendingVideos] = useState<VideoData[]>([]);
+  const [scrolling, setScrolling] = useState(false);
 
   const updateActiveVideo = (videos: VideoData[]) => {
     if (containerRef.current) {
@@ -87,7 +89,24 @@ export default function Videos() {
 
   const handleOnScroll = () => {
     updateActiveVideo(videos);
+    if (containerRef.current) {
+      if (
+        Math.round(containerRef.current.scrollTop) %
+          containerRef.current.clientHeight ===
+        0
+      ) {
+        setScrolling(false);
+      } else {
+        setScrolling(true);
+      }
+    }
   };
+
+  useEffect(() => {
+    if (shouldLoadMore(activeVideoIndex, videos.length)) {
+      setOffset((prev) => prev + 10);
+    }
+  }, [activeVideoIndex, videos.length]);
 
   // fetch more videos
   useEffect(() => {
@@ -96,7 +115,7 @@ export default function Videos() {
     getVideos(offset)
       .then((data) => {
         if (!mount) return;
-        setVideos((prev) => [...prev.slice(-5), ...data]);
+        setPendingVideos(data);
       })
       .finally(() => setLoading(false));
 
@@ -106,10 +125,13 @@ export default function Videos() {
   }, [offset]);
 
   useEffect(() => {
-    if (shouldLoadMore(activeVideoIndex, videos.length)) {
-      setOffset((prev) => prev + 10);
+    if (!scrolling && pendingVideos.length) {
+      setTimeout(() => {
+        setVideos((prev) => [...prev.slice(-5), ...pendingVideos]);
+        setPendingVideos([]);
+      }, 300);
     }
-  }, [activeVideoIndex, videos.length]);
+  }, [pendingVideos, scrolling]);
 
   return (
     <div className={styles.container}>
