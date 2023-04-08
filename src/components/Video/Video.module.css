@@ -3,10 +3,14 @@
   height: 100%;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  position: relative;
 }
 
 .player {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
