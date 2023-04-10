@@ -79,7 +79,11 @@ export default function Videos() {
   const [scrolling, setScrolling] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Determine the active video when user stops scrolling
+  useEventListener(videosRef, "scroll", (e) => {
+    setScrolling(true);
+  });
+
+  // Determine the active video once user stops scrolling
   useEventListener(videosRef, "scrollend", (e) => {
     setScrolling(false);
     const videosContainer = e.target as HTMLDivElement;
@@ -139,11 +143,7 @@ export default function Videos() {
 
   return (
     <div className={styles.container}>
-      <div
-        className={styles.videos}
-        ref={videosRef}
-        onScroll={() => setScrolling(true)}
-      >
+      <div className={styles.videos} ref={videosRef}>
         {videos.map((item, i) => (
           <Video
             key={item.id}
