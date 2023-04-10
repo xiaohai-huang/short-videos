@@ -10,10 +10,4 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Prevent flicking at index 4 when using sliding window */
-  /* Remove the effect of the width and height of the player, 
-    so we can hide the player freely */
-  position: absolute;
-  top: 0;
-  left: 0;
 }
