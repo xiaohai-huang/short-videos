@@ -9,6 +9,7 @@
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   scroll-snap-stop: always;
+  background-color: black;
 }
 
 .footer {
