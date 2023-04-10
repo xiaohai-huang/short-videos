@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import "scrollyfills";
-
+import "@utils/scrollend";
 import Video from "@components/Video/Video";
 import useEventListener from "@utils/useEventListener";
 
