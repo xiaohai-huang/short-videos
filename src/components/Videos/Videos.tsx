@@ -1,7 +1,10 @@
-import Video from "@components/Video/Video";
-import { useEffect, useRef, useState } from "react";
-import styles from "./Videos.module.css";
+import { useEffect, useMemo, useRef, useState } from "react";
+import "scrollyfills";
 
+import Video from "@components/Video/Video";
+import useEventListener from "@utils/useEventListener";
+
+import styles from "./Videos.module.css";
 type VideoData = {
   id: string;
   src: string;
@@ -49,96 +52,92 @@ function isPlayerLive(activeVideoIndex: number, index: number) {
   return live;
 }
 
-function getActiveVideoIndex(container: HTMLDivElement) {
-  const index = Math.round(container.scrollTop / container.clientHeight);
-  return index;
-}
-
 function getVideos(offset: number = 0) {
   return new Promise<VideoData[]>((resolve) => {
     setTimeout(() => {
       resolve(data.map((item) => ({ ...item, id: `${offset}-${item.id}` })));
-    }, 0);
+    }, 1000);
   });
 }
 
 function shouldLoadMore(activeVideoIndex: number, numVideos: number) {
-  if (activeVideoIndex === -1) return false;
-
-  return activeVideoIndex >= numVideos - 3;
+  const numVideosLeft = numVideos - 1 - activeVideoIndex;
+  return numVideosLeft <= 3;
 }
 
 export default function Videos() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const videosRef = useRef<HTMLDivElement>(null);
   const [videos, setVideos] = useState<VideoData[]>([]);
   const [activeVideoId, setActiveVideoId] = useState("");
-  const [activeVideoIndex, setActiveVideoIndex] = useState(-1);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const activeVideoIndex = useMemo(() => {
+    if (!activeVideoId) return -1;
+    return videos.findIndex((video) => video.id === activeVideoId);
+  }, [activeVideoId, videos]);
+  const [page, setPage] = useState(1);
   const [pendingVideos, setPendingVideos] = useState<VideoData[]>([]);
   const [scrolling, setScrolling] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const updateActiveVideo = (videos: VideoData[]) => {
-    if (containerRef.current) {
-      const index = getActiveVideoIndex(containerRef.current);
-      const id = videos[index].id;
-      setActiveVideoId(id);
-      setActiveVideoIndex(index);
-    }
-  };
+  // Determine the active video when user stops scrolling
+  useEventListener(videosRef, "scrollend", (e) => {
+    setScrolling(false);
+    const videosContainer = e.target as HTMLDivElement;
+    const activeVideo = Array.from(videosContainer.children).find((child) => {
+      const { top } = child.getBoundingClientRect();
+      return -1 <= top && top <= 1;
+    });
 
-  const handleOnScroll = () => {
-    updateActiveVideo(videos);
-    if (containerRef.current) {
-      if (
-        Math.round(containerRef.current.scrollTop) %
-          containerRef.current.clientHeight ===
-        0
-      ) {
-        setScrolling(false);
-      } else {
-        setScrolling(true);
-      }
-    }
-  };
+    if (!activeVideo) return;
+    setActiveVideoId(activeVideo.getAttribute("video-id") ?? "");
+  });
 
-  useEffect(() => {
-    if (shouldLoadMore(activeVideoIndex, videos.length)) {
-      setOffset((prev) => prev + 10);
-    }
-  }, [activeVideoIndex, videos.length]);
-
-  // fetch more videos
+  // fetch videos and add them to pending videos list
   useEffect(() => {
     let mount = true;
     setLoading(true);
-    getVideos(offset)
+    getVideos(page)
       .then((data) => {
         if (!mount) return;
-        setPendingVideos(data);
+        setPendingVideos((prev) => [...prev, ...data]);
       })
       .finally(() => setLoading(false));
-
     return () => {
       mount = false;
     };
-  }, [offset]);
+  }, [page]);
 
   useEffect(() => {
-    if (!scrolling && pendingVideos.length) {
-      setTimeout(() => {
-        setVideos((prev) => [...prev.slice(-5), ...pendingVideos]);
-        setPendingVideos([]);
-      }, 300);
+    if (scrolling || pendingVideos.length === 0) return;
+
+    console.log("I can add more videos cuz I am not scrolling.");
+    setVideos((prev) => [...prev, ...pendingVideos]);
+    setPendingVideos([]);
+  }, [scrolling, pendingVideos]);
+
+  // Increment the page when reach the near end of the videos
+  useEffect(() => {
+    if (
+      pendingVideos.length === 0 &&
+      !loading &&
+      videos.length &&
+      shouldLoadMore(activeVideoIndex, videos.length)
+    ) {
+      console.log("increment page");
+      setPage((prev) => prev + 1);
     }
-  }, [pendingVideos, scrolling]);
+  }, [pendingVideos.length, loading, activeVideoIndex, videos.length]);
+
+  // Initial load, set the first video as the active video
+  useEffect(() => {
+    if (activeVideoId === "" && videos.length) setActiveVideoId(videos[0].id);
+  }, [activeVideoId, videos]);
 
   return (
     <div className={styles.container}>
       <div
         className={styles.videos}
-        ref={containerRef}
-        onScroll={handleOnScroll}
+        ref={videosRef}
+        onScroll={() => setScrolling(true)}
       >
         {videos.map((item, i) => (
           <Video
@@ -151,10 +150,10 @@ export default function Videos() {
         ))}
       </div>
       <footer className={styles.footer}>
-        <button>Hello</button>
-        <button>Hello</button>
-        <button>Hello</button>
-        <button>Hello</button>
+        <button>pending: {pendingVideos.length}</button>
+        <button>index: {activeVideoIndex}</button>
+        <button>id: {activeVideoId}</button>
+        <button>{loading ? "loading..." : "done"}</button>
       </footer>
     </div>
   );

@@ -29,7 +29,12 @@ export default function Video({ id, src, active, live }: VideoProps) {
   }, [active]);
 
   return (
-    <div className={styles.video}>
+    <div
+      className={styles.video}
+      video-id={id}
+      is-live={live ? "" : undefined}
+      is-active={active ? "" : undefined}
+    >
       {(active || live) && (
         <video
           ref={videoRef}
@@ -43,8 +48,15 @@ export default function Video({ id, src, active, live }: VideoProps) {
         />
       )}
 
-      <h2 style={{ position: "absolute", bottom: 0, color: "white" }}>
-        {live ? "live" : "die"}: {src.substring(src.length - 20)}
+      <h2
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          left: "30px",
+          color: "white",
+        }}
+      >
+        {active && "ACTIVE"}: {src.substring(src.length - 20)}
       </h2>
     </div>
   );

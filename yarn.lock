@@ -3174,6 +3174,11 @@ scheduler@^0.23.0:
   dependencies:
     loose-envify "^1.1.0"
 
+scrollyfills@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/scrollyfills/-/scrollyfills-1.0.0.tgz#2990faeb80eea2071ee317b362dccd1d6d805f4c"
+  integrity sha512-2Wwwgx5KoAqhmix+q3/HzcJfZm42k5XOcXcXu5L6vsEDxeCcorbSMshZtwQQxqGeowWf3/8RSGVswmwqOB+utw==
+
 semver@^6.1.1, semver@^6.1.2, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.npmjs.org/semver/-/semver-6.3.0.tgz"
