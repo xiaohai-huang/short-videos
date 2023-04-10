@@ -35,6 +35,11 @@ export default function Video({ id, src, active, live }: VideoProps) {
       is-live={live ? "" : undefined}
       is-active={active ? "" : undefined}
     >
+      <img
+        className={styles.cover}
+        src="https://filetandvine.com/wp-content/uploads/2015/10/pix-vertical-placeholder.jpg"
+        alt="cover"
+      />
       {(active || live) && (
         <video
           ref={videoRef}
