@@ -17,11 +17,11 @@ const data: VideoData[] = [
   },
   {
     id: "one",
-    src: "https://assets.mixkit.co/videos/preview/mixkit-hand-takes-a-chocolate-bunny-from-beneath-the-bush-48604-large.mp4",
+    src: "https://storage.xiaohai-huang.net/random/videos/yt1s.com%20-%20how%20to%20dry%20a%20cat%20quickly%20after%20bathing%20cats%20shorts.mp4",
   },
   {
     id: "two",
-    src: "https://assets.mixkit.co/videos/preview/mixkit-winter-fashion-cold-looking-woman-concept-video-39874-large.mp4",
+    src: "https://storage.xiaohai-huang.net/random/videos/yt1s.com%20-%20Atlas%20%20Up%20Up%20and%20Away.mp4",
   },
   {
     id: "three",
@@ -65,6 +65,8 @@ function shouldLoadMore(activeVideoIndex: number, numVideos: number) {
   return numVideosLeft <= 3;
 }
 
+const MAX_VIDEOS = 25;
+
 export default function Videos() {
   const videosRef = useRef<HTMLDivElement>(null);
   const [videos, setVideos] = useState<VideoData[]>([]);
@@ -89,6 +91,10 @@ export default function Videos() {
 
     if (!activeVideo) return;
     setActiveVideoId(activeVideo.getAttribute("video-id") ?? "");
+    if (videos.length > MAX_VIDEOS) {
+      // TODO: make sure videos around the active video are preserved
+      setVideos((prev) => prev.slice(-MAX_VIDEOS));
+    }
   });
 
   // fetch videos and add them to pending videos list
