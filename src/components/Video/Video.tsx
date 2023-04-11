@@ -59,28 +59,22 @@ export default function Video({
                 !showMore ? styles["limit-2-lines"] : ""
               }`}
             >
-              {isLongDescription(description) && !showMore ? (
-                getFirstNWords(description, 13)
-              ) : (
-                <>
-                  {description}
-                  {isLongDescription(description) && (
-                    <span style={{ display: "block" }}>&nbsp;</span>
-                  )}
-                </>
-              )}
+              {description}
             </span>
 
             {isLongDescription(description) && (
-              <button
-                type="button"
-                className={styles.expandButton}
-                onClick={() => {
-                  setShowMore((prev) => !prev);
-                }}
-              >
-                {showMore ? "less" : "more"}
-              </button>
+              <>
+                <span style={{ display: "block" }}>&nbsp;</span>
+                <button
+                  type="button"
+                  className={styles.expandButton}
+                  onClick={() => {
+                    setShowMore((prev) => !prev);
+                  }}
+                >
+                  {showMore ? "less" : "more"}
+                </button>
+              </>
             )}
           </p>
         </div>
@@ -106,10 +100,12 @@ export default function Video({
   );
 }
 
-function isLongDescription(description: string) {
-  return description.length > 30;
+function countWords(paragraph: string): number {
+  // Use regular expression to match Chinese characters and word characters
+  const matches = paragraph.match(/[\u4e00-\u9fff]|\b\w+\b/g);
+  // Return the number of matches
+  return matches ? matches.length : 0;
 }
-
-function getFirstNWords(str: string, n: number) {
-  return str.split(" ").slice(0, n).join(" ");
+function isLongDescription(description: string) {
+  return countWords(description) > 30;
 }
