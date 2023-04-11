@@ -9,8 +9,9 @@ const data: VideoData[] = [
   {
     id: "zero",
     src: "https://storage.xiaohai-huang.net/random/videos/Did%20you%20know%20you%20are%20using%20these%20right%20now_%20%23shorts.mp4",
-    user_id: "xiaohai",
-    description: "Short description",
+    user_id: "xiaodan",
+    description:
+      "我只是个猪猪蛋，你信不信我是小蛋🥚,反正我就是小蛋。详情请继续看下去 啊哈 笑啥呢 哼哼哼",
   },
   {
     id: "one",

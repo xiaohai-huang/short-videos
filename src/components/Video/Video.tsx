@@ -82,7 +82,6 @@ export default function Video({
       <div
         className={styles.playerIconContainer}
         onClick={() => {
-          console.log("click on icon container");
           setPlaying((prev) => !prev);
         }}
       ></div>
