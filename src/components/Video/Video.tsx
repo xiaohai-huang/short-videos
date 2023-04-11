@@ -60,11 +60,13 @@ export default function Video({
               }`}
             >
               {isLongDescription(description) && !showMore ? (
-                getFirstNWords(description, 15)
+                getFirstNWords(description, 13)
               ) : (
                 <>
                   {description}
-                  {isLongDescription(description) && <div>&nbsp;</div>}
+                  {isLongDescription(description) && (
+                    <span style={{ display: "block" }}>&nbsp;</span>
+                  )}
                 </>
               )}
             </span>
