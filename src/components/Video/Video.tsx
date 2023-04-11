@@ -1,3 +1,4 @@
+import UnMuteButton from "@components/UnMuteButton/UnMuteButton";
 import { useEffect, useRef, useState } from "react";
 import styles from "./Video.module.css";
 
@@ -8,6 +9,9 @@ type VideoProps = {
   live: boolean;
   userId: string;
   description: string;
+  muted: boolean;
+  onUnMute: () => void;
+  onPlayError: (errorName: string) => void;
 };
 
 export default function Video({
@@ -17,25 +21,41 @@ export default function Video({
   live,
   userId,
   description,
+  muted,
+  onUnMute,
+  onPlayError,
 }: VideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(active);
   const [showMore, setShowMore] = useState(false);
+  const [showPlayIcon, setShowPlayIcon] = useState(false);
+
   useEffect(() => {
     if (!videoRef.current) return;
     if (playing) {
-      videoRef.current.play().catch((e) => {
-        console.log(e);
-        setPlaying(false);
+      videoRef.current.play().catch((e: DOMException) => {
+        if (videoRef.current) {
+          onPlayError(e.name);
+          if (e.name === "NotAllowedError") {
+            videoRef.current.muted = true;
+            videoRef.current.play();
+          }
+        }
       });
     } else {
       videoRef.current.pause();
     }
-  }, [playing]);
+  }, [onPlayError, playing]);
 
   useEffect(() => {
     setPlaying(active);
   }, [active]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = muted;
+    }
+  }, [muted]);
 
   return (
     <div
@@ -44,12 +64,14 @@ export default function Video({
       is-live={live ? "" : undefined}
       is-active={active ? "" : undefined}
     >
+      {/* Cover Image */}
       <img
         className={styles.cover}
         src="https://filetandvine.com/wp-content/uploads/2015/10/pix-vertical-placeholder.jpg"
         alt="cover"
       />
 
+      {/* Overlay */}
       <div className={styles.overlay}>
         <div className={styles.footer}>
           <h2 className={styles.userName}>@{userId}</h2>
@@ -79,15 +101,28 @@ export default function Video({
           </p>
         </div>
       </div>
+
+      {/* Play Icon */}
       <div
         className={styles.playerIconContainer}
         onClick={() => {
           setPlaying((prev) => !prev);
+          setShowPlayIcon((prev) => !prev);
         }}
       >
-        {active && !playing && <img src="/images/play-icon.png" alt="play" />}
+        {showPlayIcon && <img src="/images/play-icon.png" alt="play" />}
       </div>
 
+      {/* UnMute Button */}
+      {muted && (
+        <UnMuteButton
+          onClick={() => {
+            onUnMute();
+          }}
+        />
+      )}
+
+      {/* Video Player */}
       {(active || live) && (
         <video
           ref={videoRef}

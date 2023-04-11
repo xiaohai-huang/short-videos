@@ -36,6 +36,7 @@ export default function Videos() {
   const [pendingVideos, setPendingVideos] = useState<VideoData[]>([]);
   const [scrolling, setScrolling] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [muted, setMuted] = useState(false);
 
   useEventListener(videosRef, "scroll", (e) => {
     setScrolling(true);
@@ -111,6 +112,13 @@ export default function Videos() {
             userId={item.user_id}
             active={item.id === activeVideoId}
             live={isPlayerLive(activeVideoIndex, i)}
+            muted={muted}
+            onUnMute={() => setMuted(false)}
+            onPlayError={(errorName) => {
+              if (errorName === "NotAllowedError") {
+                setMuted(true);
+              }
+            }}
           />
         ))}
       </div>
