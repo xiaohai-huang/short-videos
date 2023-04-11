@@ -18,3 +18,11 @@
   justify-content: space-between;
   padding: 0 1rem;
 }
+
+@supports not (height: 100dvh) {
+  .container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
