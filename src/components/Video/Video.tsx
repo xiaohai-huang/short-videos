@@ -78,10 +78,17 @@ export default function Video({
           <h2 className={styles.userName}>@{userId}</h2>
           <p className={styles.description}>
             <span
-              ref={descriptionRef}
               className={`${styles.content} ${
                 !showMore ? styles["limit-2-lines"] : ""
               }`}
+            >
+              {description}
+            </span>
+
+            <span
+              ref={descriptionRef}
+              style={{ visibility: "hidden", position: "absolute" }}
+              className={`${styles.content} ${styles["limit-2-lines"]}`}
             >
               {description}
             </span>
