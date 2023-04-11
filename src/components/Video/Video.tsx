@@ -49,14 +49,8 @@ export default function Video({
   }, [onPlayError, playing]);
 
   useEffect(() => {
-    setPlaying(active);
-  }, [active]);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = muted;
-    }
-  }, [muted]);
+    setPlaying(active && !showPlayIcon);
+  }, [active, showPlayIcon]);
 
   return (
     <div
@@ -134,6 +128,7 @@ export default function Video({
       {/* Video Player */}
       {(active || live) && (
         <video
+          muted={muted}
           ref={videoRef}
           className={styles.player}
           loop
