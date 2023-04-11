@@ -6,12 +6,21 @@ type VideoProps = {
   src: string;
   active: boolean;
   live: boolean;
+  userId: string;
+  description: string;
 };
 
-export default function Video({ id, src, active, live }: VideoProps) {
+export default function Video({
+  id,
+  src,
+  active,
+  live,
+  userId,
+  description,
+}: VideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(active);
-
+  const [showMore, setShowMore] = useState(false);
   useEffect(() => {
     if (!videoRef.current) return;
     if (playing) {
@@ -40,6 +49,48 @@ export default function Video({ id, src, active, live }: VideoProps) {
         src="https://filetandvine.com/wp-content/uploads/2015/10/pix-vertical-placeholder.jpg"
         alt="cover"
       />
+
+      <div className={styles.overlay}>
+        <div className={styles.footer}>
+          <h2 className={styles.userName}>@{userId}</h2>
+          <p className={styles.description}>
+            <span
+              className={`${styles.content} ${
+                !showMore ? styles["limit-2-lines"] : ""
+              }`}
+            >
+              {isLongDescription(description) && !showMore ? (
+                getFirstNWords(description, 15)
+              ) : (
+                <>
+                  {description}
+                  {isLongDescription(description) && <div>&nbsp;</div>}
+                </>
+              )}
+            </span>
+
+            {isLongDescription(description) && (
+              <button
+                type="button"
+                className={styles.expandButton}
+                onClick={() => {
+                  setShowMore((prev) => !prev);
+                }}
+              >
+                {showMore ? "less" : "more"}
+              </button>
+            )}
+          </p>
+        </div>
+      </div>
+      <div
+        className={styles.playerIconContainer}
+        onClick={() => {
+          console.log("click on icon container");
+          setPlaying((prev) => !prev);
+        }}
+      ></div>
+
       {(active || live) && (
         <video
           ref={videoRef}
@@ -47,22 +98,16 @@ export default function Video({ id, src, active, live }: VideoProps) {
           loop
           preload="auto"
           src={src}
-          onClick={() => {
-            setPlaying((prev) => !prev);
-          }}
         />
       )}
-
-      <h2
-        style={{
-          position: "absolute",
-          bottom: "20px",
-          left: "30px",
-          color: "white",
-        }}
-      >
-        {active && "ACTIVE"}: {src.substring(src.length - 20)}
-      </h2>
     </div>
   );
+}
+
+function isLongDescription(description: string) {
+  return description.length > 30;
+}
+
+function getFirstNWords(str: string, n: number) {
+  return str.split(" ").slice(0, n).join(" ");
 }
