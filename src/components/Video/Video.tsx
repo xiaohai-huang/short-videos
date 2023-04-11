@@ -48,6 +48,13 @@ export default function Video({
     }
   }, [onPlayError, playing]);
 
+  // Reset video play button for non-active video
+  useEffect(() => {
+    if (!active) {
+      setShowPlayIcon(false);
+    }
+  }, [active]);
+
   useEffect(() => {
     setPlaying(active && !showPlayIcon);
   }, [active, showPlayIcon]);
