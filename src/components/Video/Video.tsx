@@ -29,6 +29,7 @@ export default function Video({
   const [playing, setPlaying] = useState(active);
   const [showMore, setShowMore] = useState(false);
   const [showPlayIcon, setShowPlayIcon] = useState(false);
+  const descriptionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -77,6 +78,7 @@ export default function Video({
           <h2 className={styles.userName}>@{userId}</h2>
           <p className={styles.description}>
             <span
+              ref={descriptionRef}
               className={`${styles.content} ${
                 !showMore ? styles["limit-2-lines"] : ""
               }`}
@@ -84,7 +86,7 @@ export default function Video({
               {description}
             </span>
 
-            {isLongDescription(description) && (
+            {isLongDescription(descriptionRef.current) && (
               <>
                 <span style={{ display: "block" }}>&nbsp;</span>
                 <button
@@ -136,12 +138,8 @@ export default function Video({
   );
 }
 
-function countWords(paragraph: string): number {
-  // Use regular expression to match Chinese characters and word characters
-  const matches = paragraph.match(/[\u4e00-\u9fff]|\b\w+\b/g);
-  // Return the number of matches
-  return matches ? matches.length : 0;
-}
-function isLongDescription(description: string) {
-  return countWords(description) > 30;
+function isLongDescription(descriptionElement: HTMLElement | null) {
+  if (!descriptionElement) return false;
+  const { scrollHeight, offsetHeight } = descriptionElement;
+  return scrollHeight > offsetHeight;
 }
