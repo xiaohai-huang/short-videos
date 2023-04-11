@@ -59,6 +59,15 @@
   top: 0;
   left: 0;
   z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.playerIconContainer img {
+  object-fit: contain;
+  width: 62px;
+  height: 62px;
 }
 
 .footer {

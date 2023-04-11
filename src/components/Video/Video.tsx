@@ -84,7 +84,9 @@ export default function Video({
         onClick={() => {
           setPlaying((prev) => !prev);
         }}
-      ></div>
+      >
+        {active && !playing && <img src="/images/play-icon.png" alt="play" />}
+      </div>
 
       {(active || live) && (
         <video
