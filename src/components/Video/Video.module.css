@@ -92,27 +92,32 @@
   font-weight: normal;
   line-height: 1.2;
   position: relative;
+  --max-lines: 3;
 }
 
-.content {
-  display: block;
+/* Create some blank lines so that the expand button can be placed at the bottom right corner of the description */
+.showBlankLine::before {
+  content: "";
+  width: 0;
+  /* 18px is the line height of the desccription, 2 stands for the number of lines to represent */
+  height: calc((var(--max-lines) - 1) * 18px);
+  float: right;
 }
 
 .expandButton {
   font-weight: 600;
-  position: absolute;
-  right: 0;
-  bottom: 0;
   color: white;
   border: none;
   outline: none;
   background: none;
   cursor: pointer;
+  float: right;
+  clear: both;
 }
 
-.limit-2-lines {
+.limit-lines {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: var(--max-lines);
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -30,6 +30,7 @@ export default function Video({
   const [showMore, setShowMore] = useState(false);
   const [showPlayIcon, setShowPlayIcon] = useState(false);
   const descriptionRef = useRef<HTMLElement>(null);
+  const longDescription = isLongDescription(descriptionRef.current);
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -77,38 +78,43 @@ export default function Video({
       <div className={styles.overlay}>
         <div className={styles.footer}>
           <h2 className={styles.userName}>@{userId}</h2>
-          <p className={styles.description}>
-            <span
-              className={`${styles.content} ${
-                !showMore ? styles["limit-2-lines"] : ""
-              }`}
-            >
-              {description}
-            </span>
-
-            <span
-              ref={descriptionRef}
-              style={{ visibility: "hidden", position: "absolute" }}
-              className={`${styles.content} ${styles["limit-2-lines"]}`}
-            >
-              {description}
-            </span>
-
-            {isLongDescription(descriptionRef.current) && (
+          <div
+            className={`${styles.description} ${
+              !showMore ? styles["limit-lines"] : ""
+            } ${longDescription ? styles.showBlankLine : ""}`}
+          >
+            {longDescription && !showMore && (
               <>
-                <span style={{ display: "block" }}>&nbsp;</span>
                 <button
                   type="button"
                   className={styles.expandButton}
                   onClick={() => {
-                    setShowMore((prev) => !prev);
+                    setShowMore(true);
                   }}
                 >
-                  {showMore ? "less" : "more"}
+                  more
                 </button>
               </>
             )}
-          </p>
+            <span>{description}</span>
+
+            {/* 👻 Ghost description, used to check if the description is too long */}
+            <span
+              ref={descriptionRef}
+              style={{ visibility: "hidden", position: "absolute" }}
+              className={styles["limit-lines"]}
+            >
+              {description}
+            </span>
+            {showMore && (
+              <button
+                className={styles.expandButton}
+                onClick={() => setShowMore(false)}
+              >
+                less
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
