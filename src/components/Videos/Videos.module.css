@@ -17,6 +17,23 @@
   display: flex;
   justify-content: space-between;
   padding: 0 1rem;
+  background-color: black;
+  position: relative;
+}
+
+.loadingBar {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.footer button {
+  font-weight: 600;
+  color: white;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
 }
 
 @supports not (height: 100dvh) {

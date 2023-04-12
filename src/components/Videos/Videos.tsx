@@ -3,6 +3,7 @@ import "@utils/scrollend";
 import Video from "@components/Video/Video";
 import useEventListener from "@utils/useEventListener";
 import getVideos, { VideoData } from "@api/getVideos";
+import LoadingBar from "@components/LoadingBar/LoadingBar";
 
 import styles from "./Videos.module.css";
 
@@ -123,6 +124,7 @@ export default function Videos() {
         ))}
       </div>
       <footer className={styles.footer}>
+        <LoadingBar className={styles.loadingBar} loading />
         <button>pending: {pendingVideos.length}</button>
         <button>index: {activeVideoIndex}</button>
         <button>id: {activeVideoId}</button>
