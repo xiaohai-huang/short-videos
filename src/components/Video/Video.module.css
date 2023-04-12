@@ -100,6 +100,7 @@
   content: "";
   width: 0;
   /* 18px is the line height of the desccription, 2 stands for the number of lines to represent */
+  /* TODO: replace 18px with the computed line-height */
   height: calc((var(--max-lines) - 1) * 18px);
   float: right;
 }
