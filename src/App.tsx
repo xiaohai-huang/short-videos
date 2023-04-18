@@ -1,10 +1,22 @@
-import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Videos from "@components/Videos/Videos";
+import "./App.css";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Videos />,
+  },
+  {
+    path: "/videos",
+    element: <Videos />,
+  },
+]);
 
 function App() {
   return (
     <div className="App">
-      <Videos />
+      <RouterProvider router={router} />
     </div>
   );
 }
