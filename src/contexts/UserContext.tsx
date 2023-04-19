@@ -32,21 +32,29 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         .select("*")
         .eq("user_id", id)
         .single();
-      // @ts-ignore
-      setUser({ ...data.user, ...myUser });
+      if (!myUser) {
+        setUser(null);
+      } else {
+        // @ts-ignore
+        setUser({ ...data.user, ...myUser });
+      }
       setLoading(false);
     };
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        const id = session?.user.id;
-        const { data: myUser } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("user_id", id)
-          .single();
-        // @ts-ignore
-        setUser({ ...session?.user, ...myUser });
+        if (!session) {
+          setUser(null);
+        } else {
+          const id = session.user.id;
+          const { data: myUser } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("user_id", id)
+            .single();
+          // @ts-ignore
+          setUser({ ...session?.user, ...myUser });
+        }
 
         setLoading(false);
       }
