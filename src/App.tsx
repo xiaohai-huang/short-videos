@@ -10,6 +10,7 @@ import SpringTest from "./pages/spring-test";
 import AnimationWrapper from "@components/AnimationWrapper";
 import AnimationDetails from "./pages/animation/[id]";
 import Layout from "@components/Layout";
+import Profile from "./pages/profile";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
             <Link to="/animation/0">to animation/0</Link>
           </div>
         ),
+      },
+      {
+        path: "profile",
+        element: <Profile />,
       },
     ],
   },

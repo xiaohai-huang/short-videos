@@ -6,7 +6,10 @@ import HomeIconFilled from "./nav-icons/home-filled.svg";
 import HomeIconOutline from "./nav-icons/home-outline.svg";
 
 import CommentIconOutline from "./nav-icons/comment-outline.svg";
-import CommentFilled from "./nav-icons/comment-filled.svg";
+import CommentIconFilled from "./nav-icons/comment-filled.svg";
+
+import UserIconOutline from "./nav-icons/user-outline.svg";
+import UserIconFilled from "./nav-icons/user-filled.svg";
 
 const ROUTES = [
   { to: "/", label: "Home", icon: HomeIconOutline, activeIcon: HomeIconFilled },
@@ -14,9 +17,15 @@ const ROUTES = [
     to: "/messages",
     label: "Messages",
     icon: CommentIconOutline,
-    activeIcon: CommentFilled,
+    activeIcon: CommentIconFilled,
   },
-];
+  {
+    to: "/profile",
+    label: "Profile",
+    icon: UserIconOutline,
+    activeIcon: UserIconFilled,
+  },
+] as const;
 
 function Layout() {
   return (
