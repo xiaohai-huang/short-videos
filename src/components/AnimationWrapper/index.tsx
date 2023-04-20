@@ -58,7 +58,7 @@ function useStack() {
         }
         case NavigationType.Pop: {
           // pop the top element to display the element under it
-          if (prev.at(-2)?.key === location.key) {
+          if (prev.at(-2)?.pathname === location.pathname) {
             // the user clicks the back button, pop the card at the top
             return prev.slice(0, -1);
           }
@@ -70,8 +70,9 @@ function useStack() {
           }
           return prev.slice(0, -1);
         }
-        default: {
-          return prev;
+        case NavigationType.Replace: {
+          const temp = [...prev];
+          return temp;
         }
       }
     });
