@@ -1,5 +1,6 @@
-import UnMuteButton from "@components/UnMuteButton/UnMuteButton";
 import { useEffect, useRef, useState } from "react";
+import UnMuteButton from "@components/UnMuteButton/UnMuteButton";
+import PlayIcon from "./icons/play-icon.png";
 import styles from "./Video.module.css";
 
 type VideoProps = {
@@ -126,7 +127,7 @@ export default function Video({
           setShowPlayIcon((prev) => !prev);
         }}
       >
-        {showPlayIcon && <img src="/images/play-icon.png" alt="play" />}
+        {showPlayIcon && <img src={PlayIcon} alt="play" />}
       </div>
 
       {/* UnMute Button */}

@@ -1,3 +1,4 @@
+import UnmuteIcon from "./unmute-icon.webp";
 import styles from "./UnMuteButton.module.css";
 
 type UnMuteButtonProps = {
@@ -9,7 +10,7 @@ function UnMuteButton({ onClick }: UnMuteButtonProps) {
     <div className={styles.unmute}>
       <button onClick={onClick}>
         <div className={styles.icon}>
-          <img src="/images/unmute-icon.webp" alt="unmute" />
+          <img src={UnmuteIcon} alt="unmute" />
         </div>
         <div>Unmute</div>
       </button>
