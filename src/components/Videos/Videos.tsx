@@ -3,7 +3,6 @@ import "@utils/scrollend";
 import Video from "@components/Video/Video";
 import useEventListener from "@utils/useEventListener";
 import getVideos, { VideoData } from "@api/getVideos";
-import LoadingBar from "@components/LoadingBar/LoadingBar";
 
 import styles from "./Videos.module.css";
 
@@ -102,34 +101,25 @@ export default function Videos() {
   }, [activeVideoId, videos]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.videos} ref={videosRef}>
-        {videos.map((item, i) => (
-          <Video
-            key={item.id}
-            id={item.id}
-            src={item.src}
-            description={item.description}
-            userId={item.user_id}
-            active={item.id === activeVideoId}
-            live={isPlayerLive(activeVideoIndex, i)}
-            muted={muted}
-            onUnMute={() => setMuted(false)}
-            onPlayError={(errorName) => {
-              if (errorName === "NotAllowedError") {
-                setMuted(true);
-              }
-            }}
-          />
-        ))}
-      </div>
-      <footer className={styles.footer}>
-        <LoadingBar className={styles.loadingBar} loading />
-        <button>pending: {pendingVideos.length}</button>
-        <button>index: {activeVideoIndex}</button>
-        <button>id: {activeVideoId}</button>
-        <button>{loading ? "loading..." : "done"}</button>
-      </footer>
+    <div className={styles.videos} ref={videosRef}>
+      {videos.map((item, i) => (
+        <Video
+          key={item.id}
+          id={item.id}
+          src={item.src}
+          description={item.description}
+          userId={item.user_id}
+          active={item.id === activeVideoId}
+          live={isPlayerLive(activeVideoIndex, i)}
+          muted={muted}
+          onUnMute={() => setMuted(false)}
+          onPlayError={(errorName) => {
+            if (errorName === "NotAllowedError") {
+              setMuted(true);
+            }
+          }}
+        />
+      ))}
     </div>
   );
 }

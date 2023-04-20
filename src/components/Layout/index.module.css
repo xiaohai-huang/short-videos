@@ -1,0 +1,50 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+.loadingBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.footer {
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: black;
+  position: relative;
+}
+
+.footer a {
+  font-weight: 400;
+  color: white;
+  background: none;
+  text-decoration: none;
+  padding: 2px;
+}
+
+.footer .navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.navItem img {
+  filter: invert(63%) sepia(39%) saturate(489%) hue-rotate(98deg)
+    brightness(95%) contrast(88%);
+}
+
+.navItem.active span {
+  font-weight: 600;
+}

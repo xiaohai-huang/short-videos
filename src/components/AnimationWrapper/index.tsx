@@ -8,6 +8,8 @@ import {
   type Location,
 } from "react-router-dom";
 
+import styles from "./index.module.css";
+
 export default function AnimationWrapper() {
   const stack = useStack();
 
@@ -19,19 +21,22 @@ export default function AnimationWrapper() {
     },
   });
 
-  return transitions((style, item) => (
-    <animated.div
-      style={{
-        ...style,
-        position: "absolute",
-        height: "100vh",
-        width: "100vw",
-        overflow: "hidden",
-      }}
-    >
-      {item.component}
-    </animated.div>
-  ));
+  return (
+    <div className={styles.container}>
+      {transitions((style, item) => (
+        <animated.div
+          style={{
+            ...style,
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          {item.component}
+        </animated.div>
+      ))}
+    </div>
+  );
 }
 
 type Stack = (Location & {

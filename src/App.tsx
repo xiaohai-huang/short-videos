@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Link, RouterProvider } from "react-router-dom";
 import Videos from "@components/Videos/Videos";
 import SupabaseTest from "./pages/supabase-test";
 
@@ -9,15 +9,26 @@ import Login from "./pages/login";
 import SpringTest from "./pages/spring-test";
 import AnimationWrapper from "@components/AnimationWrapper";
 import AnimationDetails from "./pages/animation/[id]";
+import Layout from "@components/Layout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Videos />,
-  },
-  {
-    path: "/videos",
-    element: <Videos />,
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Videos />,
+      },
+      {
+        path: "messages",
+        element: (
+          <div>
+            <Link to="/animation/0">to animation/0</Link>
+          </div>
+        ),
+      },
+    ],
   },
   {
     path: "/auth",
