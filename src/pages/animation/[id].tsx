@@ -1,3 +1,4 @@
+import useTitle from "@utils/useTitle";
 import { Link, useParams } from "react-router-dom";
 
 const COLORS = [
@@ -15,7 +16,7 @@ const COLORS = [
 
 function AnimationDetails() {
   const { id } = useParams();
-
+  useTitle(`Title: ${id}`);
   return (
     <div
       style={{
