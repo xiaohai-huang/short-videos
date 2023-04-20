@@ -51,11 +51,9 @@ function useStack() {
         }
         case NavigationType.Pop: {
           // pop the top element to display the element under it
-          if (prev.length >= 2) {
-            if (prev.at(-2)?.key === location.key) {
-              // the user clicks the back button, pop the card at the top
-              return prev.slice(0, -1);
-            }
+          if (prev.at(-2)?.key === location.key) {
+            // the user clicks the back button, pop the card at the top
+            return prev.slice(0, -1);
           }
           if (prev.find((item) => item.key === location.key) === undefined) {
             // the page is first loaded
