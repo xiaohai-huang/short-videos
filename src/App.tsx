@@ -6,6 +6,9 @@ import "./App.css";
 import { UserProvider } from "./contexts/UserContext";
 import RequireAuth from "@components/RequireAuth";
 import Login from "./pages/login";
+import SpringTest from "./pages/spring-test";
+import AnimationWrapper from "@components/AnimationWrapper";
+import AnimationDetails from "./pages/animation/[id]";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +32,20 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/animation",
+    element: <AnimationWrapper />,
+    children: [
+      {
+        path: "first",
+        element: <SpringTest />,
+      },
+      {
+        path: ":id",
+        element: <AnimationDetails />,
+      },
+    ],
   },
 ]);
 

@@ -23,7 +23,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async () => {
+    (async () => {
       setLoading(true);
       const { data } = await supabase.auth.getUser();
       const id = data.user?.id;
@@ -39,7 +39,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setUser({ ...data.user, ...myUser });
       }
       setLoading(false);
-    };
+    })();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
