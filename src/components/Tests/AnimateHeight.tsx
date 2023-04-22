@@ -10,7 +10,7 @@ export default function AnimateHeight() {
     leave: { opacity: 0, height: "0%" },
   });
 
-  const handleClick = (itemToDelete) => {
+  const handleClick = (itemToDelete: string) => {
     setItems((items) => items.filter((item, i) => item !== itemToDelete));
   };
 
