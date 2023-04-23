@@ -10,7 +10,7 @@ import AnimationWrapper from "@components/AnimationWrapper";
 import AnimationDetails from "./pages/animation/[id]";
 import Layout from "@components/Layout";
 import Profile from "./pages/profile";
-import AnimateHeight from "@components/Tests/AnimateHeight";
+import Messages from "./pages/messages";
 
 const router = createBrowserRouter([
   {
@@ -27,13 +27,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: (
-              <div>
-                <h1>I am the /messages Tab</h1>
-                <Link to="1">to /messages/1</Link>
-                <AnimateHeight />
-              </div>
-            ),
+            element: <Messages />,
           },
           {
             path: ":id",
