@@ -36,7 +36,7 @@ function Layout() {
   // Only show footer when the current route is one of the four main routes
   const showFooter = !!ROUTES.find((route) => route.to === location.pathname);
   const transitions = useTransition(showFooter, {
-    from: { height: `${FOOTER_HEIGHT / 2}px` },
+    from: { height: "0px" },
     enter: { height: `${FOOTER_HEIGHT}px` },
     leave: { height: "0px" },
   });
